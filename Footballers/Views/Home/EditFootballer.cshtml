@@ -1,0 +1,43 @@
+﻿@model Footballers.ViewModels.FormViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<h2>Добавить Нового Футболиста</h2>
+<form method="post" >
+    <input type="hidden" asp-for="Footballer.Id" />
+    <label asp-for="Footballer.FirstName">Имя:</label><br />
+    <input asp-for="Footballer.FirstName" />
+    <span asp-validation-for="Footballer.FirstName" />
+    <br />
+
+    <label asp-for="Footballer.SecondName">Фамилия:</label><br />
+    <input asp-for="Footballer.SecondName" />
+    <span asp-validation-for="Footballer.SecondName" />
+    <br />
+
+    <label asp-for="Footballer.BirthDay">Дата Рождения:</label><br />
+    <input asp-for="Footballer.BirthDay" />
+    <span asp-validation-for="Footballer.BirthDay" />
+    <br />
+
+    <label asp-for="Footballer.Gender">Пол:</label><br />
+    <input asp-for="Footballer.Gender" />
+    <span asp-validation-for="Footballer.Gender" />
+    <br />
+    
+    @{
+        var teams = new SelectList(Model.Teams, "Id", "Name");
+    }
+    <label asp-for="Footballer.TeamId">Команда:</label><br />
+    <select asp-for="Footballer.TeamId" asp-items="@teams">Select Team:</select>
+    <span asp-validation-for="Footballer.TeamId" />
+
+    <br />
+    @{
+        var countries = new SelectList(Model.Countries, "Id", "Name");
+    }
+    <label asp-for="Footballer.CountryId">Страна:</label><br />
+    <select asp-for="Footballer.CountryId" asp-items="@countries">Select Country:</select>
+    <span asp-validation-for="Footballer.CountryId" />
+    <br />
+    <br />
+    <input type="submit" value="Отправить" />
+</form>
