@@ -19,6 +19,7 @@ namespace Footballers.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            //1
             return View(db.Footballers.Include(x => x.Team).Include(y => y.Country).ToList());
         }
 
