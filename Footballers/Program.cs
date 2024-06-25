@@ -1,8 +1,16 @@
 using Footballers.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Reflection.PortableExecutable;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// добавление сервисов аутентификации
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)  // схема аутентификации - с помощью cookie
+    .AddCookie(options => options.LoginPath = "/auth/login");      // подключение аутентификации с помощью cookie
+builder.Services.AddAuthorization();
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connection));
@@ -23,15 +31,17 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseAuthentication();
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 using (var scope = app.Services.CreateScope())
 {
     var service = scope.ServiceProvider;
@@ -54,12 +64,14 @@ using (var scope = app.Services.CreateScope())
         var footballer3 = new Footballer()
         { FirstName = "Zlatan", SecondName = "Ibrahimovich", BirthDay = new DateOnly(1978, 3, 22), Gender = "Male", Team = team2, Country = country1 };
 
+        var person = new Person() { Email = "zaicev2400@mail.ru", Password = "vovalox123" };
+
+        db.Add(person);
         db.AddRange(country1, country2, country3 );
         db.AddRange(team1, team2, team3);
         db.AddRange(footballer1, footballer2, footballer3);
         await db.SaveChangesAsync();
     }
-
 }
 
 app.Run();

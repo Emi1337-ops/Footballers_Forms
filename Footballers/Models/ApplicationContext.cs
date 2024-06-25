@@ -8,6 +8,7 @@ namespace Footballers.Models
         public DbSet<Footballer> Footballers { get; set; } = null!;
         public DbSet<Team> Teams { get; set; } = null!;
         public DbSet<Country> Countries { get; set; } = null!;
+        public DbSet<Person> Persons { get; set; }
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             : base(options)
         {

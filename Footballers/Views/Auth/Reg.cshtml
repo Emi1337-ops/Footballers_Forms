@@ -1,0 +1,13 @@
+﻿@model Person
+
+<h2>Регистрация</h2>
+
+<form method="post">
+    <label asp-for="Email">Emal:</label><br />
+    <input asp-for="Email" type="email"/><br />
+    <br />
+    <label asp-for="Password">Пароль:</label><br />
+    <input asp-for="Password" type="password"/><br />
+    <br />
+    <input type="submit" value="Зарегистрироваться" />
+</form>

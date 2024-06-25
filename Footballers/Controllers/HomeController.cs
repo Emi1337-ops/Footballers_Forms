@@ -4,25 +4,30 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using Footballers.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Footballers.Controllers
 {
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class HomeController : Controller
     {
         ApplicationContext db;
 
         public HomeController(ApplicationContext db)
         {
-            this.db = db;   
+            this.db = db;
         }
 
+        
         [HttpGet]
         public IActionResult Index()
         {
-            //1
             return View(db.Footballers.Include(x => x.Team).Include(y => y.Country).ToList());
         }
 
+        
         [HttpGet]
         public IActionResult Teams()
         {
