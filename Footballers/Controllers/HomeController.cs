@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace Footballers.Controllers
 {
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class HomeController : Controller
     {
         ApplicationContext db;
@@ -27,7 +27,7 @@ namespace Footballers.Controllers
             return View(db.Footballers.Include(x => x.Team).Include(y => y.Country).ToList());
         }
 
-        
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
         public IActionResult Teams()
         {

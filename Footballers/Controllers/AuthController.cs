@@ -1,16 +1,22 @@
 ﻿using Footballers.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net.NetworkInformation;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace Footballers.Controllers
 {
     public class AuthController : Controller
     {
         ApplicationContext db;
-        public AuthController(ApplicationContext db ) 
+        public AuthController(ApplicationContext db) 
         { 
             this.db = db;
         }
@@ -34,12 +40,20 @@ namespace Footballers.Controllers
             {
                 return Unauthorized();
             }
+
             var claims = new List<Claim> { new Claim(ClaimTypes.Email, person.Email) };
-            // создаем объект ClaimsIdentity
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
-            // установка аутентификационных куки
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                    audience: AuthOptions.AUDIENCE,
+                    claims: claims,
+                    expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)), // время действия 2 минуты
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+        
+            HttpContext.Response.Cookies.Append("Auth",  $"{token}");
             return Redirect(returnUrl ?? "/");
+            
         }
 
         [HttpGet]
@@ -62,19 +76,14 @@ namespace Footballers.Controllers
 
             db.Persons.Add(person);
             await db.SaveChangesAsync();
-
-            var claims = new List<Claim> { new Claim(ClaimTypes.Email, person.Email) };
-            // создаем объект ClaimsIdentity
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, "Cookies");
-            // установка аутентификационных куки
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-            return Redirect(returnUrl ?? "/");
+            return RedirectToAction(nameof(Login));
         }
 
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Response.Cookies.Delete("Auth");
+            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction(nameof(Login));
         }
     }

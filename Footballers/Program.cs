@@ -1,16 +1,54 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Footballers.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Reflection.PortableExecutable;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OAuth;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// добавление сервисов аутентификации
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)  // схема аутентификации - с помощью cookie
-    .AddCookie(options => options.LoginPath = "/auth/login");      // подключение аутентификации с помощью cookie
 builder.Services.AddAuthorization();
+// добавление сервисов аутентификации
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.Audience = "/Auth/Login";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            // указывает, будет ли валидироватьс€ издатель при валидации токена
+            ValidateIssuer = true,
+            // строка, представл€юща€ издател€
+            ValidIssuer = AuthOptions.ISSUER,
+            // будет ли валидироватьс€ потребитель токена
+            ValidateAudience = true,
+            // установка потребител€ токена
+            ValidAudience = AuthOptions.AUDIENCE,
+            // будет ли валидироватьс€ врем€ существовани€
+            ValidateLifetime = true,
+            // установка ключа безопасности
+            IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+            // валидаци€ ключа безопасности
+            ValidateIssuerSigningKey = true,
+        };
+
+        options.Events = new JwtBearerEvents
+        { 
+            OnMessageReceived = context =>
+            {
+                context.Token = context.Request.Cookies["Auth"];
+                return Task.CompletedTask;
+            }
+        };
+
+    });
+
+
 
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connection));
@@ -75,3 +113,13 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+
+public class AuthOptions
+{
+    public const string ISSUER = "MyAuthServer"; // издатель токена
+    public const string AUDIENCE = "MyAuthClient"; // потребитель токена
+    const string KEY = "mysupersecret_secretsecretsecretkey!123";   // ключ дл€ шифрации
+    public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
+        new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
+}
