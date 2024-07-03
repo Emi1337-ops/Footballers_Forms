@@ -6,6 +6,7 @@ namespace Footballers.ViewModels
     {
         public Team Team { get; set; }
         public Footballer Footballer { get; set; }
+        public IEnumerable<string> Genders { get; set; }
         public IEnumerable<Team> Teams { get; set; }
         public IEnumerable<Country> Countries { get; set; }
     }

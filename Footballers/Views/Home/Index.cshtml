@@ -21,11 +21,11 @@
             <td>@f.Team?.Name</td>
             <td>@f.Country?.Name</td>
         <td>
-            <a asp-action="EditFootballer" asp-route-id="@f.Id">Изменить</a>
+            <a class="btn" asp-action="EditFootballer" asp-route-id="@f.Id">Изменить</a>
         </td>
         <td>
             <form asp-action="DeleteFootballer" method="post" asp-route-id="@f.Id">
-                <input type="submit" value="Удалить" />
+                    <input class="btn" type="submit" value="Удалить" />
             </form>
         </td>
         </tr>

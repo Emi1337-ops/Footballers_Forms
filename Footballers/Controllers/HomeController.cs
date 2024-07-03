@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
+
 namespace Footballers.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class HomeController : Controller
     {
         ApplicationContext db;
@@ -27,7 +27,7 @@ namespace Footballers.Controllers
             return View(db.Footballers.Include(x => x.Team).Include(y => y.Country).ToList());
         }
 
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         [HttpGet]
         public IActionResult Teams()
         {
@@ -56,7 +56,8 @@ namespace Footballers.Controllers
             var model = new FormViewModel()
             {
                 Teams = db.Teams.ToList(),
-                Countries = db.Countries.ToList()
+                Countries = db.Countries.ToList(),
+                Genders = new string[] {"Мужской", "Женский"}
             };
             return View(model);
         }
@@ -122,7 +123,8 @@ namespace Footballers.Controllers
                 {
                     Footballer = footballer,
                     Teams = db.Teams.ToList(),
-                    Countries = db.Countries.ToList()
+                    Countries = db.Countries.ToList(),
+                    Genders = new string[] { "Мужской", "Женский" }
                 };
 
                 if (footballer != null) return View(viewmodel);
@@ -132,9 +134,26 @@ namespace Footballers.Controllers
         [HttpPost]
         public IActionResult EditFootballer(Footballer footballer)
         {
-            db.Footballers.Update(footballer);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                db.Footballers.Update(footballer);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            string errorMessages = "";
+            foreach (var item in ModelState)
+            {
+                if (item.Value.ValidationState == ModelValidationState.Invalid)
+                {
+                    errorMessages = $"{errorMessages}\nОшибки для свойства {item.Key}:\n";
+                    foreach (var error in item.Value.Errors)
+                    {
+                        errorMessages = $"{errorMessages}{error.ErrorMessage}\n";
+                    }
+                }
+            }
+            return Content(errorMessages);
         }
     }
 }

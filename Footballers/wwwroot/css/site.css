@@ -20,3 +20,66 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+table {
+    caption-side: bottom;
+    border-collapse: collapse;
+    
+}
+
+caption {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: #6c757d;
+    text-align: left;
+}
+
+th {
+    text-align: inherit;
+    text-align: -webkit-match-parent;
+}
+
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th {
+    padding: 5px ;
+}
+
+.btn{
+    text-decoration: none;
+    appearance: auto;
+    user-select: none;
+    align-items: flex-start;
+    text-align: center;
+    box-sizing: border-box;
+    background-color: buttonface;
+    color: buttontext;
+    white-space: pre;
+    padding-block: 1px;
+    padding-inline: 6px;
+    border-width: 1px;
+    border-style: outset;
+   
+    border-image: initial;
+}
+
+.btn:hover {
+    text-decoration: none;
+    appearance: auto;
+    user-select: none;
+    align-items: flex-start;
+    text-align: center;
+    box-sizing: border-box;
+    background-color: gray;
+    color: buttontext;
+    white-space: pre;
+    padding-block: 1px;
+    padding-inline: 6px;
+    border-width: 1px;
+    border-style: outset;
+    
+    border-image: initial;
+}

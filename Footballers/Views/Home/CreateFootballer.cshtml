@@ -1,6 +1,7 @@
 ﻿@model Footballers.ViewModels.FormViewModel
 <h2>Добавить Нового Футболиста</h2>
-<form method="post">
+<form asp-antiforgery="true"  method="post">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
     <label asp-for="Footballer.FirstName">Имя:</label><br />
     <input asp-for="Footballer.FirstName" />
     <span asp-validation-for="Footballer.FirstName" />
@@ -12,12 +13,15 @@
     <br />
 
     <label asp-for="Footballer.BirthDay">Дата Рождения:</label><br />
-    <input asp-for="Footballer.BirthDay" />
+    <input asp-for="Footballer.BirthDay" type="date"/>
     <span asp-validation-for="Footballer.BirthDay" />
     <br />
 
+    @{
+        var genders = new SelectList(Model.Genders, "Gender");
+    }
     <label asp-for="Footballer.Gender">Пол:</label><br />
-    <input asp-for="Footballer.Gender" />
+    <select asp-for="Footballer.Gender" asp-items="@genders">Пол:</select>
     <span asp-validation-for="Footballer.Gender" />
     <br />
     
@@ -37,7 +41,7 @@
     <span asp-validation-for="Footballer.CountryId" />
     <br />
     <br />
-    <input type="submit" value="Отправить" />
+    <input class="btn" type="submit" value="Отправить" />
 </form>
 <br />
 <br />
@@ -46,5 +50,5 @@
     <label asp-for="Team.Name">Добавить команду:</label><br />
     <input asp-for="Team.Name" /><br />
     <br />
-    <input type="submit" value="Отправить" />
+    <input class="btn" type="submit" value="Отправить" />
 </form>
