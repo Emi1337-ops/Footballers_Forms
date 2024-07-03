@@ -12,11 +12,6 @@
     <span asp-validation-for="Footballer.SecondName" />
     <br />
 
-    <label asp-for="Footballer.BirthDay">Дата Рождения:</label><br />
-    <input asp-for="Footballer.BirthDay" type="date"/>
-    <span asp-validation-for="Footballer.BirthDay" />
-    <br />
-
     @{
         var genders = new SelectList(Model.Genders, "Gender");
     }
@@ -24,7 +19,12 @@
     <select asp-for="Footballer.Gender" asp-items="@genders">Пол:</select>
     <span asp-validation-for="Footballer.Gender" />
     <br />
-    
+
+    <label asp-for="Footballer.BirthDay">Дата Рождения:</label><br />
+    <input asp-for="Footballer.BirthDay" type="date"/>
+    <span asp-validation-for="Footballer.BirthDay" />
+    <br />
+
     @{
         var teams = new SelectList(Model.Teams, "Id", "Name");
     }

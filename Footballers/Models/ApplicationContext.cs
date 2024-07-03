@@ -23,18 +23,18 @@ namespace Footballers.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var country1 = new Country() { Id = 1, Name = "USA" };
-            var country2 = new Country() { Id = 2, Name = "Russia" };
-            var country3 = new Country() { Id = 3, Name = "Italy" };
+            var country1 = new Country() { Id = 1, Name = "США" };
+            var country2 = new Country() { Id = 2, Name = "Россия" };
+            var country3 = new Country() { Id = 3, Name = "Италия" };
 
             var team1 = new Team() { Id = 1, Name = "PSG" };
             var team2 = new Team() { Id = 2, Name = "Real Madrid" };
-            var team3 = new Team() { Id = 3, Name = "Zenit" };
+            var team3 = new Team() { Id = 3, Name = "Зенит" };
 
             var footballer1 = new Footballer()
             { Id = 1, FirstName = "Christiano", SecondName = "Ronaldo", BirthDay = new DateOnly(1980, 5, 2), Gender = "Мужской", TeamId = 1, CountryId = 3 };
             var footballer2 = new Footballer()
-            { Id = 2, FirstName = "Artem", SecondName = "Dzuba", BirthDay = new DateOnly(1975, 8, 12), Gender = "Мужской", TeamId = 3, CountryId = 2 };
+            { Id = 2, FirstName = "Артем", SecondName = "Дзюба", BirthDay = new DateOnly(1975, 8, 12), Gender = "Мужской", TeamId = 3, CountryId = 2 };
             var footballer3 = new Footballer()
             { Id = 3, FirstName = "Zlatan", SecondName = "Ibrahimovich", BirthDay = new DateOnly(1978, 3, 22), Gender = "Мужской", TeamId = 2, CountryId = 1 };
 
@@ -55,10 +55,6 @@ namespace Footballers.Models
                     footballer2,
                     footballer3
             );
-
-            
-
-            
         }
     }
 }

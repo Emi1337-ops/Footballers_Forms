@@ -26,7 +26,7 @@ app.UseStaticFiles();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=CreateFootballer}");
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
