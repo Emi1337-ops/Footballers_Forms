@@ -1,4 +1,7 @@
+using Footballers.Abstractions;
 using Footballers.Models;
+using Footballers.Repositories;
+using Footballers.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +11,15 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(c
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IFormViewRepository, FormViewRepository>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+
+builder.Services.AddScoped<IFormViewService, FormViewService>();
+builder.Services.AddScoped<IPlayersService, PlayersService>();
+builder.Services.AddScoped<ITeamsService, TeamsService>();
+
 
 var app = builder.Build();
 
@@ -23,10 +35,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=CreateFootballer}");
+    pattern: "{controller=Player}/{action=GetAll}");
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 

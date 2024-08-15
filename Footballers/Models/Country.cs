@@ -1,4 +1,6 @@
-﻿namespace Footballers.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Footballers.Models
 {
     public class Country
     {

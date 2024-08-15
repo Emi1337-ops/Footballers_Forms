@@ -6,7 +6,7 @@
         <tr>
             <td>@t.Name</td>
             <td>
-                <form asp-action="DeleteTeam" method="post" asp-route-id="@t.Id">
+                <form asp-action="Delete" method="post" asp-route-id="@t.Id">
                     <input class="btn" type="submit" value="Удалить" />
                 </form>
             </td>

@@ -5,7 +5,6 @@ namespace Footballers.Models
 {
     public class Footballer
     {
-        
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Не указано Имя")]

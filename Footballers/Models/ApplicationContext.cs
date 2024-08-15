@@ -25,18 +25,19 @@ namespace Footballers.Models
         {
             var country1 = new Country() { Id = 1, Name = "США" };
             var country2 = new Country() { Id = 2, Name = "Россия" };
-            var country3 = new Country() { Id = 3, Name = "Италия" };
+            var country3 = new Country() { Id = 3, Name = "Италия" } ;
 
-            var team1 = new Team() { Id = 1, Name = "PSG" };
+            var team1 = new Team() { Id = 1, Name = "PSG" } ;
             var team2 = new Team() { Id = 2, Name = "Real Madrid" };
             var team3 = new Team() { Id = 3, Name = "Зенит" };
 
             var footballer1 = new Footballer()
-            { Id = 1, FirstName = "Christiano", SecondName = "Ronaldo", BirthDay = new DateOnly(1980, 5, 2), Gender = "Мужской", TeamId = 1, CountryId = 3 };
-            var footballer2 = new Footballer()
-            { Id = 2, FirstName = "Артем", SecondName = "Дзюба", BirthDay = new DateOnly(1975, 8, 12), Gender = "Мужской", TeamId = 3, CountryId = 2 };
-            var footballer3 = new Footballer()
-            { Id = 3, FirstName = "Zlatan", SecondName = "Ibrahimovich", BirthDay = new DateOnly(1978, 3, 22), Gender = "Мужской", TeamId = 2, CountryId = 1 };
+                {Id = 1, FirstName = "Christiano", SecondName = "Ronaldo", 
+                Gender = "Мужской",  BirthDay = new DateOnly(1980, 5, 2), TeamId = 1, CountryId = 3 };
+            var footballer2 = new Footballer() { Id = 2, FirstName = "Артем", SecondName = "Дзюба",
+                Gender = "Мужской", BirthDay = new DateOnly(1975, 8, 12), TeamId = 3, CountryId = 2 };
+            var footballer3 = new Footballer() { Id = 3, FirstName = "Zlatan", SecondName = "Ibrahimovich",
+                Gender = "Мужской", BirthDay = new DateOnly(1978, 3, 22), TeamId = 2, CountryId = 1 };
 
             modelBuilder.Entity<Country>().HasData(
                     country1,

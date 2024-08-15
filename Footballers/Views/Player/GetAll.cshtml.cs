@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace FootballersMVC.Views.Table
+namespace Footballers.Views.Player
 {
     public class IndexModel : PageModel
     {
