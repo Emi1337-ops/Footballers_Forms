@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web:
+    image: mcr.microsoft.com/dotnet/aspnet:7.0
+    container_name: aspnetcore_app
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=localhost;Port=5432;Username=postgres;Password=0000;Database=DefaultConnection
+    depends_on:
+      - db
+    volumes:
+      - ./app:/app
+    working_dir: /app
+    #command: ["dotnet", "Footballers.dll"]
+
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 0000
+      POSTGRES_DB: DefaultConnection
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
