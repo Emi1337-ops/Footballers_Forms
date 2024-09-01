@@ -2,7 +2,7 @@
 
 
 <h2>Футболисты</h2>
-<table>
+<table id="PlayersTable">
     <tr>
         <th>Имя</th>
         <th>Фамилия</th>
@@ -13,21 +13,23 @@
     </tr>
     @foreach (Footballer f in Model)
     {
-        <tr>
-            <td>@f.FirstName</td>
-            <td>@f.SecondName</td>
-            <td>@f.BirthDay</td>
-            <td>@f.Gender</td>
-            <td>@f.Team?.Name</td>
-            <td>@f.Country?.Name</td>
-        <td>
-            <a class="btn" asp-action="Edit" asp-route-id="@f.Id">Изменить</a>
-        </td>
-        <td>
-            <form asp-action="Delete" method="post" asp-route-id="@f.Id">
-                    <input class="btn" type="submit" value="Удалить" />
-            </form>
-        </td>
+        <tr id="@f.Id" name="teamid @f.Team?.Id">
+            <td id="@f.Id Fn">@f.FirstName</td>
+            <td id="@f.Id Sn">@f.SecondName</td>
+            <td id="@f.Id Bd">@f.BirthDay</td>
+            <td id="@f.Id G">@f.Gender</td>
+            <td id="@f.Id T">@f.Team?.Name</td>
+            <td id="@f.Id C">@f.Country?.Name</td>
+            <td>
+                <a class="btn" asp-action="Edit" asp-route-id="@f.Id">Изменить</a>
+            </td>
+            <td>
+                <form asp-action="Delete" method="post" asp-route-id="@f.Id">
+                        <input  class="btn" type="submit" value="Удалить" />
+                </form>
+            </td>
         </tr>
     }
 </table>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/table.js"></script>

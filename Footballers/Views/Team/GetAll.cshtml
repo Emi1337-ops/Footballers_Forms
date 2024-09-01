@@ -1,9 +1,9 @@
 ﻿@model List<Team>
 <h2>Команды</h2>
-<table>
+<table id="TeamsTable">
     @foreach (Team t in Model)
     {
-        <tr>
+        <tr id="@t.Id">
             <td>@t.Name</td>
             <td>
                 <form asp-action="Delete" method="post" asp-route-id="@t.Id">
@@ -13,3 +13,5 @@
         </tr>
     }
 </table>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/team_table.js"></script>

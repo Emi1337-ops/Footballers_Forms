@@ -23,7 +23,7 @@ namespace Footballers.Repositories
 
         public Footballer? GetFootballer(int? id) 
         { 
-            return  context.Footballers.AsNoTracking().FirstOrDefault(p => p.Id == id);
+            return  context.Footballers.AsNoTracking().Include(x => x.Team).Include(y => y.Country).FirstOrDefault(p => p.Id == id);
         }
 
         public void CreateFootballer(Footballer footballer)

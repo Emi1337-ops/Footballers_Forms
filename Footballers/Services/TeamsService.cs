@@ -1,4 +1,6 @@
-﻿using Footballers.Abstractions;
+﻿
+using Footballers.Abstractions;
+using Footballers.Hubs;
 using Footballers.Models;
 
 namespace Footballers.Services
@@ -6,10 +8,12 @@ namespace Footballers.Services
     public class TeamsService : ITeamsService
     {
         private readonly ITeamRepository _teamRepository;
+        private readonly IPlayersHub hub;
 
-        public TeamsService(ITeamRepository teamRepository)
+        public TeamsService(ITeamRepository teamRepository, IPlayersHub Hub)
         {
             _teamRepository = teamRepository;
+            hub = Hub;
         }
 
         public List<Team> GetAllTeams()
@@ -29,6 +33,10 @@ namespace Footballers.Services
         public void CreateTeam(Team team)
         {
             _teamRepository.CreateTeam(team);
+            var Team = _teamRepository.GetTeam(team.Id);
+            if (Team != null)
+            { hub.AddTeam(team); }
+                
         }
 
         public void DeleteTeam(int? Id)
@@ -36,6 +44,7 @@ namespace Footballers.Services
             if (Id != null)
             {
                 _teamRepository.DeleteTeam(Id);
+                hub.DeleteTeam(Id.Value);
             }
         }
     }

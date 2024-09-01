@@ -10,11 +10,13 @@ namespace Footballers.Controllers
     {
         private readonly IPlayersService _playersService;
         private readonly IFormViewService _formViewService;
+        private readonly IPlayersHub _playersHub;
 
-        public PlayerController(IPlayersService playersService, IFormViewService formViewService)
+        public PlayerController(IPlayersService playersService, IFormViewService formViewService, IPlayersHub playersHub)
         {
             _playersService = playersService;
             _formViewService = formViewService;
+            _playersHub = playersHub;
         }
 
         [HttpGet]

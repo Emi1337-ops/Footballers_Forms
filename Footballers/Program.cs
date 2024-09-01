@@ -1,8 +1,10 @@
 using Footballers.Abstractions;
+using Footballers.Hubs;
 using Footballers.Models;
 using Footballers.Repositories;
 using Footballers.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Owin.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(c
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
+
 
 builder.Services.AddScoped<IFormViewRepository, FormViewRepository>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
@@ -20,6 +24,7 @@ builder.Services.AddScoped<IFormViewService, FormViewService>();
 builder.Services.AddScoped<IPlayersService, PlayersService>();
 builder.Services.AddScoped<ITeamsService, TeamsService>();
 
+builder.Services.AddSingleton<IPlayersHub, PlayersHub>();
 
 var app = builder.Build();
 
@@ -34,11 +39,12 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Player}/{action=GetAll}");
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+app.MapHub<PlayersHub>("/Hub");
 
 app.Run();
